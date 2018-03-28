@@ -1,0 +1,17 @@
+{
+	"currencyPairs" : ["BTC-AUD", "ETH-AUD", "BCH-AUD"],
+	"refreshInterval" : 5000,
+	"ioThreads" : 20,
+	"exchanges" : [
+		{
+			"id" : "BTCMarkets",
+			"fee" : "0.95",
+			"connectorClass" : "application.exchange.btcmarkets.BTCMarketsConnector"
+		},
+		{
+			"id" : "ACX",
+			"fee" : "0.99",
+			"connectorClass" : "application.exchange.acx.ACXConnector"
+		}
+	]
+}
