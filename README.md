@@ -44,3 +44,6 @@ There are three layers :
  -  **Event layer #3** : After all currency-pair spreads have been calculated, sort all of them and generate the output
 
  ___(Logic implemented in the class : application.SpreadCalculatorTask)___
+
+### ToDos
+ - Implement rate throttling
