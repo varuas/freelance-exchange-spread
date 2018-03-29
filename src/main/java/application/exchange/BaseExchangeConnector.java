@@ -32,14 +32,7 @@ public abstract class BaseExchangeConnector {
 	}
 
 	public Observable<Optional<NetTickPrice>> getTickInfo(String baseCurrency, String quoteCurrency) {
-		return Observable.fromCallable(() -> {
-			try {
-				return fetchNetPrices(baseCurrency, quoteCurrency);
-			} catch (final Exception e) {
-				LOGGER.error("Error occurred during fetching of tick data", e);
-				return Optional.empty();
-			}
-		});
+		return Observable.fromCallable(() -> fetchNetPrices(baseCurrency, quoteCurrency));
 	}
 
 	protected abstract Optional<NetTickPrice> fetchNetPrices(String baseCurrency, String quoteCurrency) throws IOException;

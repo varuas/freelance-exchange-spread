@@ -28,9 +28,9 @@ public class ApplicationRunner {
 
 		final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 		final SpreadCalculatorTask spreadCalculatorTask = new SpreadCalculatorTask(appConfig);
-		executor.scheduleAtFixedRate(spreadCalculatorTask, 0, appConfig.getRefreshInterval(), TimeUnit.MILLISECONDS);
+		executor.scheduleWithFixedDelay(spreadCalculatorTask, 0, appConfig.getRefreshInterval(), TimeUnit.MILLISECONDS);
 
-		System.out.println("To exit, press Ctrl-C");
+		System.out.println("Program started...\nTo exit, press Ctrl-C");
 		System.in.read();
 		executor.shutdownNow();
 		executor.awaitTermination(2, TimeUnit.SECONDS);

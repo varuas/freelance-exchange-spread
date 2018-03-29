@@ -46,7 +46,7 @@ public class Utils {
 	 */
 	public static String formatConsolePrint(List<SpreadInfo> spreadInfos) {
 		final StringBuilder outputBuilder = new StringBuilder();
-		outputBuilder.append("\nSpread print time : " + LocalDateTime.now() + "\n");
+		outputBuilder.append("\nTime : " + LocalDateTime.now() + "\n");
 		outputBuilder.append("--------------------------------------------------------------------------------\n");
 		outputBuilder.append(String.format("%4s%8s%9s%12s%15s%12s%15s\n", "Sr", "Spread%", "Currency", "Ask", "Ask-Exch", "Bid", "Bid-Exch"));
 		outputBuilder.append("--------------------------------------------------------------------------------\n");

@@ -135,7 +135,11 @@ public class SpreadCalculatorTask implements Runnable {
 			final Observable<Optional<NetTickPrice>> exchObservable =
 					connector.getTickInfo(baseCurrency, quoteCurrency)
 						.subscribeOn(pooledIOScheduler)
-						.observeOn(Schedulers.computation());
+						.observeOn(Schedulers.computation())
+						.onErrorReturn( (t) -> {
+							LOGGER.warn("Failed to get tick info", t);
+							return Optional.empty();
+						});
 			exchObservables.add(exchObservable);
 		}
 		return exchObservables;
