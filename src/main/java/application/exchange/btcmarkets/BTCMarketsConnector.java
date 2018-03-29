@@ -22,6 +22,11 @@ public class BTCMarketsConnector extends BaseExchangeConnector {
 		final String url = String.format(TICK_URL_PATTERN, baseCurrency.toUpperCase(), quoteCurrency.toUpperCase());
 		final BTCMarketsTickInfo btcTickInfo = getJson(url, BTCMarketsTickInfo.class);
 
+		if(btcTickInfo.getSuccess() != null && btcTickInfo.getSuccess() == false) {
+			throw new IOException("Failed to get tick info for BTCMarkets using url : " + url);
+		}
+
+
 		final BigDecimal fee = getExchangeConfig().getFee();
 
 		final BigDecimal netAskPrice = btcTickInfo.getBestAsk().multiply(fee);

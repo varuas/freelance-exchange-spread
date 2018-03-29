@@ -50,7 +50,7 @@ public abstract class BaseExchangeConnector {
 				new Request.Builder().url(url).build()).execute();
 			if(response.code() != 200) {
 				throw new IOException(String.format(
-						"Invalid response code : %s from : {%d} ",
+						"Invalid response code : %d from : {%s} ",
 						response.code(), url));
 			}
 			LOGGER.info("Got response from : " + url + " = " + response.code());

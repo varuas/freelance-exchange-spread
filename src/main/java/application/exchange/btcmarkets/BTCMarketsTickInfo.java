@@ -11,6 +11,8 @@ public class BTCMarketsTickInfo {
 
 	private BigDecimal bestAsk;
 
+	private Boolean success;
+
 	public BigDecimal getBestBid() {
 		return bestBid;
 	}
@@ -25,5 +27,13 @@ public class BTCMarketsTickInfo {
 
 	public void setBestAsk(BigDecimal bestAsk) {
 		this.bestAsk = bestAsk;
+	}
+
+	public Boolean getSuccess() {
+		return success;
+	}
+
+	public void setSuccess(Boolean success) {
+		this.success = success;
 	}
 }
