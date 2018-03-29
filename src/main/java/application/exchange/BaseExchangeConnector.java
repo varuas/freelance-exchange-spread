@@ -14,6 +14,7 @@ import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public abstract class BaseExchangeConnector {
 
@@ -59,8 +60,17 @@ public abstract class BaseExchangeConnector {
 
 	protected <T> T getJson(String url, Class<T> clazz) throws IOException {
 		final Response response = getResponse(url);
-		final String responseTxt = response.body().string();
-		return objectMapper.readValue(responseTxt, clazz);
+		ResponseBody body = null;
+		try {
+			body = response.body();
+			final String responseTxt = body.string();
+			final T parsedObj = objectMapper.readValue(responseTxt, clazz);
+			return parsedObj;
+		} finally {
+			if(body != null) {
+				body.close();
+			}
+		}
 	}
 
 }
