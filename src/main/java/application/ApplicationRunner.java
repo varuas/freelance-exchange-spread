@@ -12,8 +12,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import application.configuration.AppConfig;
 
+/**
+ * Starts the application.
+ */
 public class ApplicationRunner {
 
+	/**
+	 * JSON configuration file that stores the parameters required for this application
+	 */
 	private static final String CONFIGURATION_FILE_NAME = "config.json";
 
 	private static Logger LOGGER = LoggerFactory.getLogger(ApplicationRunner.class);
@@ -34,7 +40,6 @@ public class ApplicationRunner {
 		System.in.read();
 		executor.shutdownNow();
 		executor.awaitTermination(2, TimeUnit.SECONDS);
-		spreadCalculatorTask.shutdown();
 
 		LOGGER.info("Application stopped");
 	}

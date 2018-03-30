@@ -2,6 +2,10 @@ package application;
 
 import java.math.BigDecimal;
 
+/**
+ * POJO for storing the spread along with best ask & bid price for a particular
+ * currency pair.
+ */
 public class SpreadInfo {
 
 	private String ccyPair;

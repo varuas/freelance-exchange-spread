@@ -46,4 +46,5 @@ There are three layers :
  ___(Logic implemented in the class : application.SpreadCalculatorTask)___
 
 ### ToDos
- - Implement rate throttling
+ - [Optimization] Only poll those ccy pairs which are active on the BTC market
+ - [Optimization] Alternative approach of BTC markets connector using semaphores

@@ -2,6 +2,11 @@ package application;
 
 import java.math.BigDecimal;
 
+/**
+ * POJO for storing the top level bid & ask price for a particular currency-pair
+ * for a particular exchange. The prices for bid and ask are adjusted with the
+ * fees for that exchange.
+ */
 public class NetTickPrice {
 
 	private final String exchangeId;

@@ -1,30 +1,45 @@
 package application.exchange.acx;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * JSON annotated POJO for the response received for GET requests from ACX.
+ *
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ACXTickInfo {
 
-	private List<ACXTickDetailInfo> asks;
+	@JsonProperty("base_unit")
+	private String baseCurrency;
 
-	private List<ACXTickDetailInfo> bids;
+	@JsonProperty("quote_unit")
+	private String quoteCurrency;
 
-	public List<ACXTickDetailInfo> getAsks() {
-		return asks;
+	private ACXTickDetailInfo ticker;
+
+	public String getBaseCurrency() {
+		return baseCurrency;
 	}
 
-	public void setAsks(List<ACXTickDetailInfo> asks) {
-		this.asks = asks;
+	public void setBaseCurrency(String baseCurrency) {
+		this.baseCurrency = baseCurrency;
 	}
 
-	public List<ACXTickDetailInfo> getBids() {
-		return bids;
+	public String getQuoteCurrency() {
+		return quoteCurrency;
 	}
 
-	public void setBids(List<ACXTickDetailInfo> bids) {
-		this.bids = bids;
+	public void setQuoteCurrency(String quoteCurrency) {
+		this.quoteCurrency = quoteCurrency;
+	}
+
+	public ACXTickDetailInfo getTicker() {
+		return ticker;
+	}
+
+	public void setTicker(ACXTickDetailInfo ticker) {
+		this.ticker = ticker;
 	}
 
 }

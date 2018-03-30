@@ -13,10 +13,19 @@ import application.configuration.AppConfig;
 import application.configuration.ExchangeConfig;
 import application.exchange.BaseExchangeConnector;
 
+/**
+ * Common utility class for the application
+ */
 public class Utils {
 
+	/**
+	 * Logger instance for this class
+	 */
 	private static Logger LOGGER = LoggerFactory.getLogger(Utils.class);
 
+	/**
+	 * Dynamically creates connector instances from the class names given in 'config.json'.
+	 */
 	public static Map<String, BaseExchangeConnector> createExchangeConnectorInstances(AppConfig appConfig) {
 		final Map<String, BaseExchangeConnector> connectors = new HashMap<>(appConfig.getExchanges().size());
 		for (final ExchangeConfig exchangeConfig : appConfig.getExchanges()) {
@@ -25,8 +34,8 @@ public class Utils {
 			try {
 				@SuppressWarnings("unchecked")
 				final Constructor<BaseExchangeConnector> constructor = (Constructor<BaseExchangeConnector>) Class
-						.forName(connectorClass).getConstructor(ExchangeConfig.class);
-				final BaseExchangeConnector connector = constructor.newInstance(exchangeConfig);
+						.forName(connectorClass).getConstructor(AppConfig.class, ExchangeConfig.class);
+				final BaseExchangeConnector connector = constructor.newInstance(appConfig, exchangeConfig);
 				connectors.put(id, connector);
 				LOGGER.info("Initialized connector : " + connectorClass);
 			} catch (ReflectiveOperationException | SecurityException | IllegalArgumentException e) {
@@ -39,21 +48,27 @@ public class Utils {
 	}
 
 	/**
-	 * Formats the given SpreadInfo array into a string suitable for console printing.
-	 *
-	 * Unfortunately, the observable zip API returns an object array.
-	 * Expectation is that the 'spreadArr' param should be of type SpreadInfo[];
+	 * Formats the given SpreadInfo list into a string suitable for console
+	 * printing.
 	 */
 	public static String formatConsolePrint(List<SpreadInfo> spreadInfos) {
 		final StringBuilder outputBuilder = new StringBuilder();
+
 		outputBuilder.append("\nTime : " + LocalDateTime.now() + "\n");
 		outputBuilder.append("--------------------------------------------------------------------------------\n");
-		outputBuilder.append(String.format("%4s%8s%9s%12s%15s%12s%15s\n", "Sr", "Spread%", "Currency", "Ask", "Ask-Exch", "Bid", "Bid-Exch"));
+
+		if(spreadInfos.isEmpty()) {
+			outputBuilder.append("Initializing...\n");
+			return outputBuilder.toString();
+		}
+
+		outputBuilder.append(String.format("%4s%8s%9s%12s%15s%12s%15s\n",
+				"Sr", "Spread%", "Currency", "Ask", "Ask-Exch", "Bid", "Bid-Exch"));
 		outputBuilder.append("--------------------------------------------------------------------------------\n");
 		int index = 1;
 		for(final SpreadInfo spread : spreadInfos) {
 			outputBuilder.append(String.format(
-					"%4d"    // Sr.
+					"%4d"    // Sr. No.
 					+ "%8.4f" // Spread
 					+ "%9s" // Currency
 					+ "%12.4f" // Ask
@@ -66,5 +81,4 @@ public class Utils {
 		}
 		return outputBuilder.toString();
 	}
-
 }
