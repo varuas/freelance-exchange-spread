@@ -6,11 +6,14 @@
 		{
 			"id" : "BTCMarkets",
 			"fee" : "0.95",
+			"pollingLimit" : 2.5,
+			"ioThreads" : 4,
 			"connectorClass" : "application.exchange.btcmarkets.BTCMarketsConnector"
 		},
 		{
 			"id" : "ACX",
 			"fee" : "0.99",
+			"pollingLimit" : 1,
 			"connectorClass" : "application.exchange.acx.ACXConnector"
 		}
 	]
