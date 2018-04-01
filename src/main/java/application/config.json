@@ -1,18 +1,20 @@
 {
 	"currencyPairs" : ["BTC-AUD", "ETH-AUD", "BCH-AUD"],
 	"refreshInterval" : 5000,
+	"threadPools" : {"poolACX" : 1, "poolBTC" : 1},
 	"exchanges" : [
 		{
 			"id" : "BTCMarkets",
 			"fee" : "0.95",
 			"pollingLimit" : 2.5,
-			"ioThreads" : 4,
+			"threadPool" : "poolBTC",
 			"connectorClass" : "application.exchange.btcmarkets.BTCMarketsConnector"
 		},
 		{
 			"id" : "ACX",
 			"fee" : "0.99",
 			"pollingLimit" : 2,
+			"threadPool" : "poolACX",
 			"connectorClass" : "application.exchange.acx.ACXConnector"
 		}
 	]
