@@ -1,8 +1,8 @@
 package application;
 
 import java.io.InputStream;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -11,6 +11,9 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import application.configuration.AppConfig;
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Starts the application.
@@ -32,15 +35,20 @@ public class ApplicationRunner {
 		final InputStream configResource = ApplicationRunner.class.getResourceAsStream(CONFIGURATION_FILE_NAME);
 		final AppConfig appConfig = objMapper.readValue(configResource, AppConfig.class);
 
-		final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-		final SpreadCalculatorTask spreadCalculatorTask = new SpreadCalculatorTask(appConfig);
-		executor.scheduleWithFixedDelay(spreadCalculatorTask, 0, appConfig.getRefreshInterval(), TimeUnit.MILLISECONDS);
+		final SpreadCalculatorTask task = new SpreadCalculatorTask(appConfig);
+		final ExecutorService executor = Executors.newSingleThreadExecutor();
+		final Scheduler scheduler = Schedulers.from(executor);
+		Observable
+			.interval(appConfig.getRefreshInterval(), TimeUnit.MILLISECONDS)
+			.subscribeOn(scheduler)
+			.observeOn(scheduler)
+			.subscribe(tick -> task.run());
 
 		System.out.println("Program started...\nTo exit, press Ctrl-C");
 		System.in.read();
-		executor.shutdownNow();
-		executor.awaitTermination(2, TimeUnit.SECONDS);
 
 		LOGGER.info("Application stopped");
+		System.out.println("Program terminated.");
+		System.exit(0);
 	}
 }

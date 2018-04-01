@@ -24,18 +24,20 @@ Launch class : application.ApplicationRunner.main(String[])
 {
 	"currencyPairs" : ["BTC-AUD", "ETH-AUD", "BCH-AUD"],
 	"refreshInterval" : 5000,
+	"threadPools" : {"poolACX" : 1, "poolBTC" : 10},
 	"exchanges" : [
 		{
 			"id" : "BTCMarkets",
 			"fee" : "0.95",
 			"pollingLimit" : 2.5,
-			"ioThreads" : 4,
+			"threadPool" : "poolBTC",
 			"connectorClass" : "application.exchange.btcmarkets.BTCMarketsConnector"
 		},
 		{
 			"id" : "ACX",
 			"fee" : "0.99",
 			"pollingLimit" : 2,
+			"threadPool" : "poolACX",
 			"connectorClass" : "application.exchange.acx.ACXConnector"
 		}
 	]
@@ -67,7 +69,3 @@ There are three layers :
  - The code is easy to maintain and all configurations are externalized in a structured JSON format.
  - Modular approach to the addition of more exchanges (i.e. apart from ACX and BTCMarkets) - no modification of existing code needs to be done.
  - Exchange specific optimizations are done (e.g. for ACX, a single GET request polls the order book for all currency-pairs)
-
-### ToDos
- - [Optimization] Only poll those ccy pairs which are active on the BTC market
- - [Optimization] Alternative approach of BTC markets connector using semaphores

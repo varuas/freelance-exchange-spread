@@ -5,13 +5,19 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Maps;
+
 import application.configuration.AppConfig;
 import application.configuration.ExchangeConfig;
 import application.exchange.BaseExchangeConnector;
+import io.reactivex.Scheduler;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Common utility class for the application
@@ -27,15 +33,27 @@ public class Utils {
 	 * Dynamically creates connector instances from the class names given in 'config.json'.
 	 */
 	public static Map<String, BaseExchangeConnector> createExchangeConnectorInstances(AppConfig appConfig) {
+
+		final Map<String, Integer> threadPoolConfigs = appConfig.getThreadPools();
+		final Map<String, Scheduler> schedulers = Maps.newHashMapWithExpectedSize(threadPoolConfigs.keySet().size());
+
+		threadPoolConfigs.forEach((poolId, poolSize) -> {
+			final ExecutorService executor = Executors.newFixedThreadPool(poolSize);
+			final Scheduler scheduler = Schedulers.from(executor);
+			schedulers.put(poolId, scheduler);
+		});
+
 		final Map<String, BaseExchangeConnector> connectors = new HashMap<>(appConfig.getExchanges().size());
 		for (final ExchangeConfig exchangeConfig : appConfig.getExchanges()) {
 			final String id = exchangeConfig.getId();
+			final String poolId = exchangeConfig.getThreadPool();
+			final Scheduler scheduler = schedulers.get(poolId);
 			final String connectorClass = exchangeConfig.getConnectorClass();
 			try {
 				@SuppressWarnings("unchecked")
 				final Constructor<BaseExchangeConnector> constructor = (Constructor<BaseExchangeConnector>) Class
-						.forName(connectorClass).getConstructor(AppConfig.class, ExchangeConfig.class);
-				final BaseExchangeConnector connector = constructor.newInstance(appConfig, exchangeConfig);
+						.forName(connectorClass).getConstructor(AppConfig.class, ExchangeConfig.class, Scheduler.class);
+				final BaseExchangeConnector connector = constructor.newInstance(appConfig, exchangeConfig, scheduler);
 				connectors.put(id, connector);
 				LOGGER.info("Initialized connector : " + connectorClass);
 			} catch (ReflectiveOperationException | SecurityException | IllegalArgumentException e) {

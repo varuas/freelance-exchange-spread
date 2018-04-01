@@ -23,14 +23,14 @@ public class ExchangeConfig {
 	private String connectorClass;
 
 	/**
+	 * The thread pool identifier that will be used for this exchange pollling
+	 */
+	private String threadPool;
+
+	/**
 	 * The polling limit of the exchange (requests per second)
 	 */
 	private Double pollingLimit;
-
-	/**
-	 * The no. of IO threads to use for polling.
-	 */
-	private Integer ioThreads;
 
 	public String getId() {
 		return id;
@@ -56,10 +56,10 @@ public class ExchangeConfig {
 	public void setPollingLimit(Double pollingLimit) {
 		this.pollingLimit = pollingLimit;
 	}
-	public Integer getIoThreads() {
-		return ioThreads;
+	public String getThreadPool() {
+		return threadPool;
 	}
-	public void setIoThreads(Integer ioThreads) {
-		this.ioThreads = ioThreads;
+	public void setThreadPool(String threadPool) {
+		this.threadPool = threadPool;
 	}
 }
