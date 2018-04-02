@@ -23,7 +23,7 @@ public class ApplicationRunner {
 	/**
 	 * JSON configuration file that stores the parameters required for this application
 	 */
-	private static final String CONFIGURATION_FILE_NAME = "config.json";
+	private static final String CONFIGURATION_FILE_NAME = "/config.json";
 
 	private static Logger LOGGER = LoggerFactory.getLogger(ApplicationRunner.class);
 

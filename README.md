@@ -17,7 +17,13 @@ Time : 2018-03-31T18:00:58.563
 ```
 
 ### Program Execution
-Launch class : application.ApplicationRunner.main(String[])
+
+Execute using Maven : Execute run.bat to run the program.
+
+Alternatively, use the command :
+```
+mvn exec:java -Dexec.mainClass="application.ApplicationRunner"
+```
 
 ### Configuration : File *config.json*
 ```
