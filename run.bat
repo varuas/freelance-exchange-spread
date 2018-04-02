@@ -1,1 +1,1 @@
-mvn exec:java -Dexec.mainClass="application.ApplicationRunner"
+mvn compile exec:java -Dexec.mainClass="application.ApplicationRunner"
